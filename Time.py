@@ -45,7 +45,10 @@ class Time():
     # Функция, осуществляющая парсинг строк со словесным обозначением даты.
     def parse_string(self, input_string):
         if ':' in input_string:
-            input_list = input_string.split(' в ' or ' at ')
+            if ' at ' in input_string:
+                input_list = input_string.split(' at ')
+            elif ' в ' in input_string:
+                input_list = input_string.split(' в ')
             word = input_list[0]
             time = input_list[1]
             result = self.input_word_and_time(word, time)

@@ -25,9 +25,6 @@
 Как еще можно со мной взаимодействовать:
 - `/start` - начало работы
 - `/help` - список доступных кнопок
-- `/задачи` - все-все-все твои дела
-- `/сегодня` - список твоих дел на сегодня
-- `/завтра` - список твоих дел на завтра
 
 ## Greeting message (ENG)
 
@@ -56,6 +53,3 @@ Moreover, for you to stay updated I will:
 What else can I do:
 - `/start` - let's start
 - `/help` - the list of available buttons
-- `/задачи` - all your tasks
-- `/сегодня` - to-do-list on today
-- `/завтра` - to-do-list on tomorrow
