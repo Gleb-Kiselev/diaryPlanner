@@ -8,4 +8,8 @@
 
 This telegram-chat-bot is created for you _to stay updated with your **to-do-list**_.
 
+<<<<<<< HEAD
 All instructions could be found in the **_greeting-message_**.
+=======
+All instructions could be found in the **_greeting-message_**.
+>>>>>>> cdf30122ac0b94b7018174d37434378cd5bfa451
