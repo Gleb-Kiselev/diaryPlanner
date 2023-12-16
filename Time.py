@@ -7,7 +7,7 @@ class Time():
         # Регулярное выражение для строк вида '2018/10/1 22:20'.
         self.reg_date = re.compile(r'(\d{4}/\d{1,2}/\d{1,2} \d{2}:\d{2}) (.*)')
         # Регулярное выражение для строк вида 'завтра в 15:00'.
-        self.reg_word = re.compile(r'([a-zA-zа-яА-я ]* в|at \d{2}:\d{2}) (.*)')
+        self.reg_word = re.compile(r'([A-zА-я ]*) (в|at) (\d{2}:\d{2}) (.*)')
         self.days_and_shift = {
             'сегодня': timedelta(days=0),
             'today': timedelta(days=0),
@@ -68,7 +68,9 @@ class Time():
 
         match_reg_word = self.reg_word.match(input_string)
         if match_reg_word:
-            return self.parse_string(match_reg_word.group(1)), match_reg_word.group(2)
+            return self.parse_string(match_reg_word.group(1) + ' ' +
+                match_reg_word.group(2) + ' ' +
+                match_reg_word.group(3)), match_reg_word.group(4)
 
         first_word = input_string.split()[0]
         if first_word in self.days_and_shift:
