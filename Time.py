@@ -7,16 +7,18 @@ class Time():
         # Регулярное выражение для строк вида '2018/10/1 22:20'.
         self.reg_date = re.compile(r'(\d{4}/\d{1,2}/\d{1,2} \d{2}:\d{2}) (.*)')
         # Регулярное выражение для строк вида 'завтра в 15:00'.
-        self.reg_word = re.compile(r'([а-я ]* в \d{2}:\d{2}) (.*)')
+        self.reg_word = re.compile(r'([a-zA-zа-яА-я ]* в|at \d{2}:\d{2}) (.*)')
         self.days_and_shift = {
             'сегодня': timedelta(days=0),
+            'today': timedelta(days=0),
             'завтра': timedelta(days=1),
+            'tomorrow': timedelta(days=1),
             'послезавтра': timedelta(days=2),
-            'через неделю': timedelta(days=7)
+            'через неделю': timedelta(days=7),
+            'in a week': timedelta(days=7)
         }
 
-    # Функция для превращения строки с датой и временем
-    # в объект datetime.
+    # Функция для превращения строки с датой и временем в объект datetime.
     def parse_raw_date(self, input_string):
         try:
             result = datetime.strptime(input_string, "%Y/%m/%d %H:%M")
@@ -24,9 +26,7 @@ class Time():
             return None
         return result
 
-    # Функция для превращения строки
-    # со словесным обозначением даты и временем
-    # в объект datetime.
+    # Функция для превращения строки со словесным обозначением даты и временем в объект datetime.
     def input_word_and_time(self, word, time):
         time_to_add = datetime.strptime(time, "%H:%M").time()
         if word not in self.days_and_shift:
@@ -34,8 +34,7 @@ class Time():
         date_to_add = date.today() + self.days_and_shift[word]
         return datetime.combine(date_to_add, time_to_add)
 
-    # Функция для превращения строки
-    # со словесным обозначением даты в объект date.
+    # Функция для превращения строки со словесным обозначением даты в объект date.
     def input_word(self, word):
         today_date = datetime.today().date()
         if word not in self.days_and_shift:
@@ -43,11 +42,10 @@ class Time():
         result = today_date + self.days_and_shift[word]
         return result
 
-    # Функция, осуществляющая парсинг строк
-    # со словесным обозначением даты.
+    # Функция, осуществляющая парсинг строк со словесным обозначением даты.
     def parse_string(self, input_string):
         if ':' in input_string:
-            input_list = input_string.split(' в ')
+            input_list = input_string.split(' в ' or ' at ')
             word = input_list[0]
             time = input_list[1]
             result = self.input_word_and_time(word, time)
@@ -56,8 +54,7 @@ class Time():
             result = self.input_word(word)
         return result
 
-    # Функция, осуществляющая парсинг строки
-    # вне зависимости от формата.
+    # Функция, осуществляющая парсинг строки вне зависимости от формата.
     def parse(self, input_string):
         if not input_string:
             return None
