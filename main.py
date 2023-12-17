@@ -114,7 +114,7 @@ class ReminderHandler():
             for chat_id in task_manager.keys():
                 tasks_list = task_manager[chat_id].get_tasks_for_today()
                 today_tasks = '\n'.join(map(str, tasks_list))
-                bot.send_message(chat_id,
+                bot.send_message(chat_id, 'Задачи на сегодня:\n' + 
                                  today_tasks if len(today_tasks) > 0 else "На сегодня ничего не запланировано.")
 
         # Проверяем, нужно ли отправить напоминание о завтрашних задачах.
@@ -123,8 +123,23 @@ class ReminderHandler():
             for chat_id in task_manager.keys():
                 tasks_list = task_manager[chat_id].get_tasks_for_tomorrow()
                 today_tasks = '\n'.join(map(str, tasks_list))
-                bot.send_message(chat_id,
+                bot.send_message(chat_id, 'Задачи на завтра:\n' + 
                                  today_tasks if len(today_tasks) > 0 else "На завтра ничего не запланировано.")
+
+        self.moment_reminder()
+
+
+
+    def moment_reminder(self):
+        now = datetime.now()
+        for chat_id in task_manager.keys():
+            tasks_list = task_manager[chat_id].get_tasks_for_today()
+            for task in tasks_list:
+                if(not task.reminded
+                    and isinstance(task.date, datetime)
+                    and (task.date - now).seconds <= 600):
+                    task.reminded = True
+                    bot.send_message(chat_id, 'Напоминание:\n' + str(task))
 
 
 def filter_tasks():
@@ -135,7 +150,7 @@ def run_reminder():
     reminder_handler = ReminderHandler()
     while True:
         reminder_handler.update()
-        time.sleep(3600)
+        time.sleep(10)
 
 
 def start_reminder():

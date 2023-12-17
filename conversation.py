@@ -7,6 +7,7 @@ class Task():
         assert isinstance(task_date, datetime) or isinstance(task_date, date)
         self.date = task_date
         self.task = task
+        self.reminded = False
 
     def __eq__(self, other):
         return self.date == other.date and self.task == other.task
