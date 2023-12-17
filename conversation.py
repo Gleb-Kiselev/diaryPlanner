@@ -11,6 +11,17 @@ class Task():
     def __eq__(self, other):
         return self.date == other.date and self.task == other.task
 
+    def __lt__(self, other):
+        if self.__get_date_object() < other.__get_date_object():
+            return True
+        elif self.__get_date_object() > other.__get_date_object():
+            return False
+        else:
+            if isinstance(self.date, datetime) and isinstance(other.date, datetime):
+                return self.date < other.date
+            else:
+                return not isinstance(self.date, datetime)
+
     def __str__(self):
         return 'Когда: {}. Задача: {}.'.format(self.date, self.task)
 
@@ -42,7 +53,24 @@ class TaskManager():
 
     def add_task(self, task):
         assert isinstance(task, Task)
-        self.tasks.append(task)
+        if(len(self.tasks) == 0):
+            self.tasks.append(task)
+            return
+        L = 0
+        R = len(self.tasks)-1
+        while (R-L > 1):
+            M = (L+R)//2
+            if task < self.tasks[M]:
+                R = M
+            else:
+                L = M
+
+        if task < self.tasks[L]:
+            self.tasks.insert(L, task)
+        elif task < self.tasks[R]:
+            self.tasks.insert(R, task)
+        else:
+            self.tasks.insert(R+1, task)
 
     def get_all_tasks(self):
         return self.tasks

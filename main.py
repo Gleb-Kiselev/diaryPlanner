@@ -31,7 +31,7 @@ def func(message):
 
         mesg = bot.send_message(message.chat.id, text='''Запишите дело в формате: Время Дело
             Например: "сегодня в 15:00 сходить к врачу"
-            Или: "2023/18/12 16:00 сделать уборку"''')
+            Или: "2023/12/18 16:00 сделать уборку"''')
         bot.register_next_step_handler(mesg, adding_task)
     elif (message.text == "Получить дела на сегодня"):
 
