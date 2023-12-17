@@ -72,6 +72,10 @@ class TaskManager():
         else:
             self.tasks.insert(R+1, task)
 
+
+    def remove_task(self, task_id):
+        del self.tasks[task_id]
+
     def get_all_tasks(self):
         return self.tasks
 
