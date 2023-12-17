@@ -25,7 +25,7 @@ def start(message):
     btn5 = types.KeyboardButton("Удалить дело")
 
     markup.add(btn1, btn3, btn2, btn4, btn5)
-    with open('start_message', 'r')  as file:
+    with open('start_message.md', 'r')  as file:
         text = file.read()
     bot.send_message(message.chat.id, text, reply_markup=markup) #format(message.from_user)
 
