@@ -14,14 +14,15 @@ bot = telebot.TeleBot(TG_TOKEN, parse_mode="MARKDOWN")
 @bot.message_handler(commands=['start', 'help'])
 def start(message: telebot.types.Message):
     """
-    Функция для ответа на команды \start, \help
-    Отправляет стартовое сообщение из файла "start_message.md"
-    Создаёт кнопки для работы бота
-    "Записать новое дело"
-    "Получить дела на сегодня"
-    "Получить список всех задач"
-    "Получить дела на завтра"
-    "Удалить дело"
+    Функция для ответа на команды \start, \help.
+    Отправляет стартовое сообщение из файла "start_message.md".
+    Создаёт кнопки для работы бота:
+    "Записать новое дело",
+    "Получить дела на сегодня",
+    "Получить список всех задач",
+    "Получить дела на завтра",
+    "Удалить дело".
+
     args:  message -- telebot.types.Message
     """
 
@@ -42,12 +43,12 @@ def start(message: telebot.types.Message):
 @bot.message_handler(content_types=['text'])
 def func(message: telebot.types.Message):
     """
-    Функция для ответа на команды из кнопок
-    "Записать новое дело"
-    "Получить дела на сегодня"
-    "Получить список всех задач"
-    "Получить дела на завтра"
-    "Удалить дело"
+    Функция для ответа на команды из кнопок:
+    "Записать новое дело",
+    "Получить дела на сегодня",
+    "Получить список всех задач",
+    "Получить дела на завтра",
+    "Удалить дело".
 
     args:  message -- telebot.types.Message
     """
@@ -92,7 +93,8 @@ def func(message: telebot.types.Message):
 
 def adding_task(message: telebot.types.Message):
     """
-    Функция для добавления новых задач в переменную task_manager
+    Функция для добавления новых задач в переменную task_manager.
+
     args - message -- telebot.types.Message
     """
     task = conversation.create_task(message.text.lower())
@@ -106,7 +108,8 @@ def adding_task(message: telebot.types.Message):
 
 def deleting_task(message: telebot.types.Message):
     """
-    Функция для удаления  задач из переменной task_manager
+    Функция для удаления  задач из переменной task_manager.
+
     args - message -- telebot.types.Message
     """
     tasks_list = task_manager[message.chat.id].get_all_tasks()
@@ -119,12 +122,13 @@ def deleting_task(message: telebot.types.Message):
 
 class ReminderHandler():
     """
-    Класс содержит информацию об отправке уведомлений пользователю
+    Класс содержит информацию об отправке уведомлений пользователю.
+
     Методы:
 
-    update - метод для отправки напоминаний в начале и в конце дня о сегодняшних и завтрашних задачах
+    update - метод для отправки напоминаний в начале и в конце дня о сегодняшних и завтрашних задачах,
 
-    moment_reminder - метод для отпарвки напоминаний за 10 минут до дела
+    moment_reminder - метод для отпарвки напоминаний за 10 минут до дела.
     """
 
     def __init__(self):
@@ -168,7 +172,7 @@ class ReminderHandler():
 
     def moment_reminder(self):
         """
-        Метод для отправки  мгновенных напоминаний - за 10 минут до дела
+        Метод для отправки  мгновенных напоминаний - за 10 минут до дела.
         """
         now = datetime.now()
         for chat_id in task_manager.keys():
@@ -183,7 +187,7 @@ class ReminderHandler():
 
 def filter_tasks():
     """
-    Функция для удаления просроченных задач из словаря task_manager
+    Функция для удаления просроченных задач из словаря task_manager.
     """
     for task_man in task_manager.values():
         task_man.remove_outdated_tasks()
@@ -191,8 +195,8 @@ def filter_tasks():
 
 def run_reminder():
     """
-    Функция запускает обновление объекта ReminderHandler
-    Каждые 10 секунд происходит обновление аттрибутов класса ReminderHandler
+    Функция запускает обновление объекта ReminderHandler.
+    Каждые 10 секунд происходит обновление аттрибутов класса ReminderHandler.
     """
     reminder_handler = ReminderHandler()
     while True:
@@ -202,7 +206,7 @@ def run_reminder():
 
 def start_reminder():
     """
-   Функция создаёт отдельный поток для фоновой работы run_reminder
+   Функция создаёт отдельный поток для фоновой работы run_reminder.
     """
     t = threading.Thread(target=run_reminder)
     t.daemon = True
