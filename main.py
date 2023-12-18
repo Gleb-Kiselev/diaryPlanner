@@ -134,8 +134,8 @@ class ReminderHandler():
             tasks_list = task_manager[chat_id].get_tasks_for_today()
             for task in tasks_list:
                 if(not task.reminded
-                    and isinstance(task.date, datetime)
-                    and (task.date - now).seconds <= 600):
+                    and isinstance(task._date, datetime)
+                    and (task._date - now).seconds <= 600):
                     task.reminded = True
                     bot.send_message(chat_id, 'Напоминание:\n' + str(task))
 
