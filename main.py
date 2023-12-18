@@ -5,13 +5,11 @@ import time
 import conversation
 import threading
 import markdown
-
-
-token = '6816422069:AAEG4Q1QrTZrrmldB2F5IHrMjHnU1PSgRII'
+from settings import TG_TOKEN
 
 task_manager = dict()
 
-bot = telebot.TeleBot(token, parse_mode="MARKDOWN")
+bot = telebot.TeleBot(TG_TOKEN, parse_mode="MARKDOWN")
 
 
 @bot.message_handler(commands=['start', 'help'])
