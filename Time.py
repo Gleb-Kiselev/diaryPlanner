@@ -1,9 +1,16 @@
 import re
 from datetime import datetime, timedelta, date, time
+from typing import Union
 
 
 class Time():
+    """
+    Класс, выполняющий парсинг введенных данных.
+    """
     def __init__(self):
+        """
+        Функция-конструктор класса Time.
+        """
         # Регулярное выражение для строк вида '2018/10/1 22:20'.
         self.reg_date = re.compile(r'(\d{4}/\d{1,2}/\d{1,2} \d{2}:\d{2}) (.*)')
         # Регулярное выражение для строк вида 'завтра в 15:00'.
@@ -18,32 +25,53 @@ class Time():
             'in a week': timedelta(days=7)
         }
 
-    # Функция для превращения строки с датой и временем в объект datetime.
-    def parse_raw_date(self, input_string):
+    def parse_raw_date(self, input_string: str) -> datetime:
+        """
+        Функция для превращения строки с датой и временем в объект datetime.
+
+        :param input_string:
+        :return: объект datetime
+        """
         try:
             result = datetime.strptime(input_string, "%Y/%m/%d %H:%M")
         except ValueError:
             return None
         return result
 
-    # Функция для превращения строки со словесным обозначением даты и временем в объект datetime.
-    def input_word_and_time(self, word, time):
+    def input_word_and_time(self, word: str, time: str) -> datetime:
+        """
+        Функция для превращения строки со словесным обозначением даты и временем в объект datetime.
+
+        :param word:
+        :param time:
+        :return: объект datetime
+        """
         time_to_add = datetime.strptime(time, "%H:%M").time()
         if word not in self.days_and_shift:
             return None
         date_to_add = date.today() + self.days_and_shift[word]
         return datetime.combine(date_to_add, time_to_add)
 
-    # Функция для превращения строки со словесным обозначением даты в объект date.
-    def input_word(self, word):
+    def input_word(self, word: str) -> date:
+        """
+        Функция для превращения строки со словесным обозначением даты в объект date.
+
+        :param word:
+        :return: объект date
+        """
         today_date = datetime.today().date()
         if word not in self.days_and_shift:
             return None
         result = today_date + self.days_and_shift[word]
         return result
 
-    # Функция, осуществляющая парсинг строк со словесным обозначением даты.
-    def parse_string(self, input_string):
+    def parse_string(self, input_string: str) -> Union[datetime, date]:
+        """
+        Функция, осуществляющая парсинг строк со словесным обозначением даты.
+
+        :param input_string:
+        :return: ответ
+        """
         if ':' in input_string:
             if ' at ' in input_string:
                 input_list = input_string.split(' at ')
@@ -57,8 +85,13 @@ class Time():
             result = self.input_word(word)
         return result
 
-    # Функция, осуществляющая парсинг строки вне зависимости от формата.
-    def parse(self, input_string):
+    def parse(self, input_string: str):
+        """
+        Функция, осуществляющая парсинг строки вне зависимости от формата.
+
+        :param input_string:
+        :return: ответ
+        """
         if not input_string:
             return None
 
