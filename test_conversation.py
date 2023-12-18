@@ -58,14 +58,14 @@ def test_create_task(name, input_string, result):
 def test_add_task(name, input_task, result):
     a = conversation.TaskManager()
     a.add_task(input_task)
-    got = a.tasks
+    got = a.get_all_tasks()
     to_show = "passed" if got == result else "failed"
     print("Test add_task {} {}, got '{}', expected '{}'.".format(name, to_show, got, result))
 
 
 def test_get_all_tasks(name, input_tasks):
     a = conversation.TaskManager()
-    a.tasks = input_tasks
+    a._tasks = input_tasks
     got = a.get_all_tasks()
     to_show = "passed" if got == input_tasks else "failed"
     print("Test get_all_tasks {} {}, got '{}', expected '{}'.".format(name, to_show, got, input_tasks))
@@ -73,7 +73,7 @@ def test_get_all_tasks(name, input_tasks):
 
 def test_get_tasks_for_today(name, input_tasks, result):
     a = conversation.TaskManager()
-    a.tasks = input_tasks
+    a._tasks = input_tasks
     got = a.get_tasks_for_today()
     to_show = "passed" if got == result else "failed"
     print("Test get_tasks_for_today {} {}, got '{}', expected '{}'.".format(name, to_show, got, result))
@@ -81,7 +81,7 @@ def test_get_tasks_for_today(name, input_tasks, result):
 
 def test_get_tasks_for_tomorrow(name, input_tasks, result):
     a = conversation.TaskManager()
-    a.tasks = input_tasks
+    a._tasks = input_tasks
     got = a.get_tasks_for_tomorrow()
     to_show = "passed" if got == result else "failed"
     print("Test get_tasks_for_tomorrow {} {}, got '{}', expected '{}'.".format(name, to_show, got, result))
@@ -89,7 +89,7 @@ def test_get_tasks_for_tomorrow(name, input_tasks, result):
 
 def test_remove_outdated_tasks(name, input_tasks, result):
     a = conversation.TaskManager()
-    a.tasks = input_tasks
+    a._tasks = input_tasks
     a.remove_outdated_tasks()
     got = a.get_all_tasks()
     to_show = "passed" if got == result else "failed"

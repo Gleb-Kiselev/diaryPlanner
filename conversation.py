@@ -3,14 +3,16 @@ import Time
 
 
 class Task():
-    def __init__(self, task_date, task):
+    '''A class for tasks storing'''
+
+    def __init__(self, task_date, task:str):
         assert isinstance(task_date, datetime) or isinstance(task_date, date)
-        self.date = task_date
-        self.task = task
+        self._date = task_date
+        self._task = task
         self.reminded = False
 
     def __eq__(self, other):
-        return self.date == other.date and self.task == other.task
+        return self._date == other._date and self._task == other._task
 
     def __lt__(self, other):
         if self.__get_date_object() < other.__get_date_object():
@@ -18,79 +20,96 @@ class Task():
         elif self.__get_date_object() > other.__get_date_object():
             return False
         else:
-            if isinstance(self.date, datetime) and isinstance(other.date, datetime):
-                return self.date < other.date
+            if isinstance(self._date, datetime) and isinstance(other._date, datetime):
+                return self._date < other._date
             else:
-                return not isinstance(self.date, datetime)
+                return not isinstance(self._date, datetime)
 
     def __str__(self):
-        return 'Когда: {}. Задача: {}.'.format(self.date, self.task)
+        return 'Когда: {}. Задача: {}.'.format(self._date, self._task)
 
-    def __get_date_object(self):
-        if isinstance(self.date, datetime):
-            return self.date.date()
+    def __get_date_object(self)->date:
+        '''Special function for getting date, not datetime'''
+        if isinstance(self._date, datetime):
+            return self._date.date()
         else:
-            return self.date
+            return self._date
 
-    def get_date(self):
-        return self.date
 
-    def get_task(self):
-        return self.task
+    def get_date(self)->date:
+        return self._date
 
-    def is_today(self):
+
+    def get_task(self)->str:
+        return self._task
+
+
+
+    def is_today(self)->bool:
+        '''Checks whether date is today'''
         return self.__get_date_object() == datetime.today().date()
 
-    def is_tomorrow(self):
+    def is_tomorrow(self)->bool:
+        '''Checks whether date is tomorrow'''
         return self.__get_date_object() == datetime.today().date() + timedelta(days=1)
 
-    def is_outdated(self):
+    def is_outdated(self)->bool:
+        '''Checks whether task is outdated'''
         return self.__get_date_object() < datetime.today().date()
 
 
 class TaskManager():
+    '''A class for managing tasks list'''
     def __init__(self):
-        self.tasks = []
+        self._tasks = []
 
-    def add_task(self, task):
-        assert isinstance(task, Task)
-        if(len(self.tasks) == 0):
-            self.tasks.append(task)
+    def add_task(self, task:Task):
+        '''This function adds task to tasks list'''
+        if not isinstance(task, Task):
+            return
+        if(len(self._tasks) == 0):
+            self._tasks.append(task)
             return
         L = 0
-        R = len(self.tasks)-1
+        R = len(self._tasks)-1
         while (R-L > 1):
             M = (L+R)//2
-            if task < self.tasks[M]:
+            if task < self._tasks[M]:
                 R = M
             else:
                 L = M
 
-        if task < self.tasks[L]:
-            self.tasks.insert(L, task)
-        elif task < self.tasks[R]:
-            self.tasks.insert(R, task)
+        if task < self._tasks[L]:
+            self._tasks.insert(L, task)
+        elif task < self._tasks[R]:
+            self._tasks.insert(R, task)
         else:
-            self.tasks.insert(R+1, task)
+            self._tasks.insert(R+1, task)
 
 
-    def remove_task(self, task_id):
-        del self.tasks[task_id]
+    def remove_task(self, task_id:int):
+        '''Removes task from tasks list'''
+        del self._tasks[task_id]
 
-    def get_all_tasks(self):
-        return self.tasks
+    def get_all_tasks(self)->list:
+        '''Returns all tasks in list'''
+        return self._tasks
 
-    def get_tasks_for_today(self):
-        return list(filter(lambda x: x.is_today(), self.tasks))
+    def get_tasks_for_today(self)->list:
+        '''Returns tasks for today'''
+        return list(filter(lambda x: x.is_today(), self._tasks))
 
-    def get_tasks_for_tomorrow(self):
-        return list(filter(lambda x: x.is_tomorrow(), self.tasks))
+    def get_tasks_for_tomorrow(self)->list:
+        '''Returns tasks for tomorrow'''
+        return list(filter(lambda x: x.is_tomorrow(), self._tasks))
 
     def remove_outdated_tasks(self):
-        self.tasks = list(filter(lambda x: not x.is_outdated(), self.tasks))
+        '''Removes outdated tasks'''
+        self._tasks = list(filter(lambda x: not x.is_outdated(), self._tasks))
 
 
-def create_task(input_string):
+def create_task(input_string:str)->Task:
+    '''Function for creating new task from string'''
     parsed_input_string = Time.Time().parse(input_string)
     if not parsed_input_string:
         return None
